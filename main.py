@@ -38,7 +38,8 @@ def run(args):
             logger.info("Running script at {}".format(mod_name))
 
             mod = importlib.import_module(mod_name)
-            mod.run(args.nb_epochs, args.w, args.m, args.d, args.label, args.rd)
+            #mod.run(args.nb_epochs, args.w, args.m, args.d, args.label, args.rd)
+            mod.run(args.train_test, args.nb_epochs, args.w, args.m, args.d, args.label, args.rd)
 
         except Exception as e:
             logger.exception(e)
@@ -57,6 +58,7 @@ def path(d):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Run examples from the DL 2.0 Anomaly Detector.')
+    parser.add_argument('train_test', nargs="?", choices=['train', 'test'], help='train or test')
     parser.add_argument('example', nargs="?", type=path, help='the folder name of the example you want to run e.g gan or bigan')
     parser.add_argument('dataset', nargs="?", choices=['mnist', 'kdd'], help='the name of the dataset you want to run the experiments on')
     parser.add_argument('split', nargs="?", choices=['run'], help='train the example or evaluate it')
@@ -64,7 +66,7 @@ if __name__ == "__main__":
     parser.add_argument('--label', nargs="?", type=int, help='anomalous label for the experiment')
     parser.add_argument('--w', nargs="?", default=0.1, type=float, help='weight for the sum of the mapping loss function')
     parser.add_argument('--m', nargs="?", default='fm', choices=['cross-e', 'fm'], help='mode/method for discriminator loss')
-    parser.add_argument('--d', nargs="?", default=1, defaulttype=int, help='degree for the L norm')
+    parser.add_argument('--d', nargs="?", default=1, type=int, help='degree for the L norm')
     parser.add_argument('--rd', nargs="?", default=42, type=int, help='random_seed')
 
     run(parser.parse_args())
